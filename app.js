@@ -25,6 +25,6 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.listen(3001, () => {
-  console.log('server is running on port 3001');
+app.listen(3000, () => {
+  console.log('server is running on port 3000');
 });
