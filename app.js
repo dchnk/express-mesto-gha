@@ -25,6 +25,10 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'Странрица не найдена' });
+});
+
 app.listen(3000, () => {
   console.log('server is running on port 3000');
 });
