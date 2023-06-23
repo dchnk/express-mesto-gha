@@ -39,7 +39,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         res.status(404).send({ message: 'Польльзователь не найден' });
@@ -57,7 +57,8 @@ module.exports.updateUserInfo = (req, res) => {
 };
 
 module.exports.updateUserAvatar = (req, res) => {
-  User.findByIdAndUpdate(req.user._id, { avatar: req.body.avatar }, { new: true })
+  // eslint-disable-next-line max-len
+  User.findByIdAndUpdate(req.user._id, { avatar: req.body.avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         res.status(404).send({ message: 'Польльзователь не найден' });
