@@ -30,7 +30,13 @@ module.exports.deleteCard = (req, res) => {
       }
       res.status(200).send({ message: 'Карточка удалена' });
     })
-    .catch(() => res.status(400).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
+        return;
+      }
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 module.exports.likeCard = (req, res) => {
@@ -46,7 +52,13 @@ module.exports.likeCard = (req, res) => {
       }
       res.status(200).send(card);
     })
-    .catch((err) => res.status(500).send({ massage: `Произошла ошибка ${err}, текст ошибки ${err.message}` }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
+        return;
+      }
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 module.exports.dislikeCard = (req, res) => {
@@ -62,7 +74,13 @@ module.exports.dislikeCard = (req, res) => {
       }
       res.status(200).send(card);
     })
-    .catch((err) => res.status(500).send({ massage: `Произошла ошибка ${err}, текст ошибки ${err.message}` }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
+        return;
+      }
+      res.status(500).send({ message: 'Произошла ошибка' });
+    });
 };
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
