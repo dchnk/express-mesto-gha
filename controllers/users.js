@@ -18,7 +18,7 @@ module.exports.getUserById = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      res.status(500).send({ message: `Произошла ошибка ${err.name}` });
+      res.status(400).send({ message: `Произошла ошибка ${err.name}` });
     });
 };
 
