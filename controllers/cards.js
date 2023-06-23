@@ -32,8 +32,7 @@ module.exports.deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
-        return;
+        return res.status(400).send({ message: `Произошла ошибка ${err.message}` });
       }
       res.status(500).send({ message: 'Произошла ошибка' });
     });
@@ -47,15 +46,13 @@ module.exports.likeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-        return;
+        return res.status(404).send({ message: 'Карточка не найдена' });
       }
       res.status(200).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
-        return;
+        return res.status(400).send({ message: `Произошла ошибка ${err.message}` });
       }
       res.status(500).send({ message: 'Произошла ошибка' });
     });
@@ -69,15 +66,13 @@ module.exports.dislikeCard = (req, res) => {
   )
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-        return;
+        return res.status(404).send({ message: 'Карточка не найдена' });
       }
       res.status(200).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: `Произошла ошибка ${err.message}` });
-        return;
+        return res.status(400).send({ message: `Произошла ошибка ${err.message}` });
       }
       res.status(500).send({ message: 'Произошла ошибка' });
     });
