@@ -3,7 +3,7 @@ const User = require('../models/user');
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
 };
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
@@ -32,7 +32,7 @@ module.exports.createUser = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -52,7 +52,7 @@ module.exports.updateUserInfo = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -71,6 +71,6 @@ module.exports.updateUserAvatar = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };

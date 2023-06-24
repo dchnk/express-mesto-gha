@@ -3,7 +3,7 @@ const Card = require('../models/card');
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -17,7 +17,7 @@ module.exports.createCard = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -35,7 +35,7 @@ module.exports.deleteCard = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: `Произошла ошибка ${err.name}` });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -79,7 +79,7 @@ module.exports.dislikeCard = (req, res) => {
         res.status(400).send({ message: `Произошла ошибка ${err.message}` });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
