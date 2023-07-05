@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const linkRegexTest = require('../utils/linkRegexTest');
+const { linkRegexTest } = require('../utils/linkRegexTest');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 4,
     select: false,
   },
   name: {

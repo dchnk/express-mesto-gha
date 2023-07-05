@@ -1,4 +1,3 @@
-const validator = require('validator');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { generateToken } = require('../utils/jwt');
@@ -8,21 +7,13 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 const ConflictError = require('../utils/Errors/ConflictError');
 
 module.exports.getUsers = (req, res, next) => {
-  if (!req.user) {
-    throw new AuthError('Нет доступа, необходима авторизация');
-  }
   User.find({})
     .then((users) => res.status(200).send(users))
     .catch(next);
 };
 
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-
 module.exports.getUserById = (req, res, next) => {
-  if (!req.user) {
-    return next(new AuthError('Нет доступа, необходима авторизация'));
-  }
-  return User.findById(req.params._id)
+  User.findById(req.params._id)
     .then((user) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
@@ -38,31 +29,22 @@ module.exports.getUserById = (req, res, next) => {
 };
 
 module.exports.getUserInfo = (req, res, next) => {
-  if (!req.user) {
-    return next(new AuthError('Нет доступа, необходима авторизация'));
-  }
-  return User.findById(req.user._id)
+  User.findById(req.user)
     .then((user) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
       }
       return res.status(200).send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
   const {
     email, password, about, name, avatar,
   } = req.body;
-
-  if (!email || !password) {
-    return next(new BadRequestError('email или пароль не указаны'));
-  }
-
-  if (!validator.isEmail(email)) {
-    return next(new BadRequestError('email не корректен'));
-  }
 
   return bcrypt.hash(password, 10, (err, hash) => {
     User.create({
@@ -80,14 +62,6 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next(new BadRequestError('email или пароль не указаны'));
-  }
-
-  if (!validator.isEmail(email)) {
-    return next(new BadRequestError('email не корректен'));
-  }
 
   return User.findOne({ email }).select('+password')
     .then((userData) => {
@@ -107,13 +81,10 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.updateUserInfo = (req, res, next) => {
-  if (!req.user) {
-    return next(new AuthError('Нет доступа, необходима авторизация'));
-  }
   const { name, about } = req.body;
 
   return User.findByIdAndUpdate(
-    req.user._id,
+    req.user,
     { name, about },
     { new: true, runValidators: true },
   )
@@ -132,12 +103,8 @@ module.exports.updateUserInfo = (req, res, next) => {
 };
 
 module.exports.updateUserAvatar = (req, res, next) => {
-  if (!req.user) {
-    return next(new AuthError('Нет доступа, необходима авторизация'));
-  }
-  // eslint-disable-next-line max-len
-  return User.findByIdAndUpdate(
-    req.user._id,
+  User.findByIdAndUpdate(
+    req.user,
     { avatar: req.body.avatar },
     { new: true, runValidators: true },
   )

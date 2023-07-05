@@ -2,21 +2,22 @@ const { verifyToken } = require('../utils/jwt');
 const AuthError = require('../utils/Errors/AuthError');
 
 module.exports.checkToken = (req, res, next) => {
-  if (!req.headers.token) {
-    next();
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    next(new AuthError('Необходима авторизация'));
     return;
   }
+
+  const token = authorization.replace('Bearer ', '');
+  let payload;
+
   try {
-    const payload = verifyToken(req.headers.token);
-    if (payload) {
-      req.user = {
-        _id: payload,
-      };
-      next();
-      return;
-    }
-    throw new AuthError('Что - то не так с токеном');
+    payload = verifyToken(token);
   } catch (err) {
     next(err);
   }
+
+  req.user = payload;
+  next();
 };

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const { RegExp } = require('../utils/linkRegexTest');
 
 const {
   getUsers,
@@ -22,13 +23,13 @@ router.patch('/me', celebrate({
 
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required(),
+    avatar: Joi.string().pattern(RegExp).required(),
   }),
 }), updateUserAvatar);
 
 router.get('/:_id', celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().required(),
+    _id: Joi.string().length(24).hex().required(),
   }),
 }), getUserById);
 
