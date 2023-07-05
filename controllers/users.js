@@ -41,7 +41,7 @@ module.exports.getUserInfo = (req, res, next) => {
   if (!req.headers.token) {
     return next(new AuthError('Нет доступа, необходима авторизация'));
   }
-  return User.findById(req.user)
+  return User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
@@ -109,7 +109,7 @@ module.exports.updateUserInfo = (req, res, next) => {
   const { name, about } = req.body;
 
   return User.findByIdAndUpdate(
-    req.user,
+    req.user._id,
     { name, about },
     { new: true, runValidators: true },
   )

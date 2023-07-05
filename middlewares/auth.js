@@ -9,7 +9,9 @@ module.exports.checkToken = (req, res, next) => {
   try {
     const payload = verifyToken(req.headers.token);
     if (payload) {
-      req.user = payload;
+      req.user = {
+        _id: payload,
+      };
       next();
       return;
     }

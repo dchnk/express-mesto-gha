@@ -21,7 +21,7 @@ module.exports.createCard = (req, res, next) => {
   }
   const { name, link } = req.body;
 
-  Card.create({ name, link, owner: req.user })
+  Card.create({ name, link, owner: req.user._id })
     .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -40,7 +40,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (!card) {
         return next(new NotFoundError('Карточка не найдена'));
       }
-      if (card.owner.toString() !== req.user) {
+      if (card.owner.toString() !== req.user._id) {
         return next(new ForbiddenError('Нет прав для удаления карточки'));
       }
       return Card.findByIdAndDelete(req.params._id)
@@ -60,7 +60,7 @@ module.exports.likeCard = (req, res, next) => {
   }
   Card.findByIdAndUpdate(
     req.params._id,
-    { $addToSet: { likes: req.user } },
+    { $addToSet: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
@@ -84,7 +84,7 @@ module.exports.dislikeCard = (req, res, next) => {
   }
   Card.findByIdAndUpdate(
     req.params._id,
-    { $pull: { likes: req.user } },
+    { $pull: { likes: req.user._id } },
     { new: true },
   )
     .then((card) => {
