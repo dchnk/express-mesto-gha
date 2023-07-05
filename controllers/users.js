@@ -63,7 +63,7 @@ module.exports.createUser = (req, res, next) => {
   }
 
   return bcrypt.hash(password, 10, (err, hash) => {
-    User.create({ email, password: hash })
+    User.create({ email, password: hash }, { new: true, runValidators: true })
       .then((newUser) => res.status(201).send(newUser))
       .catch((error) => {
         if (error.code === 11000) {

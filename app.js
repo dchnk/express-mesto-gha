@@ -6,13 +6,11 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 
-const { errors } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 
 const { checkToken } = require('./middlewares/auth');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
-
-const { celebrate, Joi } = require('celebrate');
 
 const app = express();
 
