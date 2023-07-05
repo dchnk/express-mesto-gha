@@ -11,6 +11,8 @@ const { checkToken } = require('./middlewares/auth');
 
 const NotFoundError = require('./utils/Errors/NotFoundError');
 
+const { celebrate, Joi } = require('celebrate');
+
 const app = express();
 
 const { PORT = 3000 } = process.env;
@@ -30,8 +32,21 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   console.log('db is connected');
 });
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required().min(4),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string(),
+  }),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required().min(4),
+  }),
+}), login);
 
 app.use(checkToken);
 
