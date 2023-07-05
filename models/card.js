@@ -1,4 +1,7 @@
+/* eslint-disable no-useless-escape */
 const mongoose = require('mongoose');
+
+const linkRegexTest = require('../utils/linkRegexTest');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -9,6 +12,11 @@ const cardSchema = new mongoose.Schema({
   },
   link: {
     type: String,
+    validate: {
+      validator(v) {
+        return linkRegexTest(v);
+      },
+    },
     required: true,
   },
   owner: {
