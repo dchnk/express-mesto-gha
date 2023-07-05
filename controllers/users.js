@@ -8,7 +8,7 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 const ConflictError = require('../utils/Errors/ConflictError');
 
 module.exports.getUsers = (req, res, next) => {
-  if (!req.user._id) {
+  if (!req.user) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   User.find({})
