@@ -8,7 +8,7 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 const ConflictError = require('../utils/Errors/ConflictError');
 
 module.exports.getUsers = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   User.find({})
@@ -19,7 +19,7 @@ module.exports.getUsers = (req, res, next) => {
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 module.exports.getUserById = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     return next(new AuthError('Нет доступа, необходима авторизация'));
   }
   return User.findById(req.params._id)
@@ -38,7 +38,7 @@ module.exports.getUserById = (req, res, next) => {
 };
 
 module.exports.getUserInfo = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     return next(new AuthError('Нет доступа, необходима авторизация'));
   }
   return User.findById(req.user._id)
@@ -107,7 +107,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.updateUserInfo = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     return next(new AuthError('Нет доступа, необходима авторизация'));
   }
   const { name, about } = req.body;
@@ -132,7 +132,7 @@ module.exports.updateUserInfo = (req, res, next) => {
 };
 
 module.exports.updateUserAvatar = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     return next(new AuthError('Нет доступа, необходима авторизация'));
   }
   // eslint-disable-next-line max-len
