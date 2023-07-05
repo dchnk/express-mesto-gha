@@ -7,7 +7,7 @@ const BadRequestError = require('../utils/Errors/BadRequestError');
 const ForbiddenError = require('../utils/Errors/ForbiddenError');
 
 module.exports.getCards = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   Card.find({})
@@ -16,7 +16,7 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.createCard = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   const { name, link } = req.body;
@@ -32,7 +32,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   Card.findById(req.params._id)
@@ -55,7 +55,7 @@ module.exports.deleteCard = (req, res, next) => {
 };
 
 module.exports.likeCard = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   Card.findByIdAndUpdate(
@@ -79,7 +79,7 @@ module.exports.likeCard = (req, res, next) => {
 };
 
 module.exports.dislikeCard = (req, res, next) => {
-  if (!req.headers.token) {
+  if (!req.user._id) {
     throw new AuthError('Нет доступа, необходима авторизация');
   }
   Card.findByIdAndUpdate(
