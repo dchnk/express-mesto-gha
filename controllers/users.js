@@ -52,7 +52,9 @@ module.exports.getUserInfo = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { email, password } = req.body;
+  const {
+    email, password, about, name, avatar,
+  } = req.body;
 
   if (!email || !password) {
     return next(new BadRequestError('email или пароль не указаны'));
@@ -63,7 +65,9 @@ module.exports.createUser = (req, res, next) => {
   }
 
   return bcrypt.hash(password, 10, (err, hash) => {
-    User.create({ email, password: hash }, { new: true, runValidators: true })
+    User.create({
+      email, password: hash, about, name, avatar,
+    })
       .then((newUser) => res.status(201).send(newUser))
       .catch((error) => {
         if (error.code === 11000) {
@@ -94,7 +98,7 @@ module.exports.login = (req, res, next) => {
       return bcrypt.compare(password, userData.password, (err, result) => {
         if (result) {
           const token = generateToken(userData._id);
-          return res.status(201).send({ token });
+          return res.status(200).send({ token });
         }
         return next(new AuthError('Неверный email или пароль'));
       });
