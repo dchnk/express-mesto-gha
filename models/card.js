@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 const mongoose = require('mongoose');
 
-const linkRegexTest = require('../utils/linkRegexTest');
+const { linkRegexTest } = require('../utils/linkRegexTest');
 
 const cardSchema = new mongoose.Schema({
   name: {

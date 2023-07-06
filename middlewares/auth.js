@@ -17,7 +17,6 @@ module.exports.checkToken = (req, res, next) => {
   } catch (err) {
     next(err);
   }
-
   req.user = payload;
   next();
 };

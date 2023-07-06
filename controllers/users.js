@@ -36,9 +36,7 @@ module.exports.getUserInfo = (req, res, next) => {
       }
       return res.status(200).send(user);
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -46,18 +44,20 @@ module.exports.createUser = (req, res, next) => {
     email, password, about, name, avatar,
   } = req.body;
 
-  return bcrypt.hash(password, 10, (err, hash) => {
-    User.create({
+  return bcrypt.hash(password, 10)
+    .then((hash) => User.create({
       email, password: hash, about, name, avatar,
     })
-      .then((newUser) => res.status(201).send(newUser))
-      .catch((error) => {
-        if (error.code === 11000) {
-          return next(new ConflictError('Пользователь уже существует'));
-        }
-        return next(error);
-      });
-  });
+      .then((newUser) => res.status(201).send(newUser)))
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        return next(new BadRequestError('Введенные данные некорректны'));
+      }
+      if (error.code === 11000) {
+        return next(new ConflictError('Пользователь уже существует'));
+      }
+      return next(error);
+    });
 };
 
 module.exports.login = (req, res, next) => {
